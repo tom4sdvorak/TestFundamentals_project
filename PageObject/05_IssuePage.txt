@@ -1,0 +1,51 @@
+
+#******************** Settings ************************
+
+*** Settings ***
+Documentation	Issue Test scenario. CRUD Operation: Create, Read, Update, Delete
+
+Pre Condition	Open GitLab, Login User, Have created project
+Post Condition	Close Browser
+Tags Issue Manipulation
+
+#******************* Common Variables ********************
+
+*** Variables ***
+
+NewIssueUrl: https://gitlab.com/group-slug-here/project-slug-here/-/issues/new
+IssuesUrl: https://gitlab.com/testers2474348/first-project/-/issues
+
+IssueTitle= TestTitle
+New_IssueTitle= NewTestTitle
+
+#******************** Test Cases *************************
+
+*** Test Case ***
+
+# Positive Test examples are below write test process steps for each below test case
+
+	Create issue
+		Navigate to NewIssueUrl of created project
+		Input title IssueTitle
+		Click Create issue
+		Verify issue is created
+
+ 	Update name of issue
+		Navigate to IssuesUrl of created project
+		Navigate to existing issue
+		Click Edit
+		Change current title to New_IssueTitle
+		Verify issue is updated with new name
+
+	Create second issue with previously used name
+		Navigate to NewIssueUrl of created project
+		Input title of existing issue New_IssueTitle
+		Click Create issue
+		Verify issue is created
+
+    Delete first issue
+		Navigate to IssuesUrl of created project
+		Navigate to existing issue
+		Click Three dot icon
+		Click Delete issue
+		Verify issue is deleted

@@ -1,0 +1,89 @@
+### **Register functionality Testsuit**
+
+#******************** Settings ************************
+
+*** Settings ***
+
+Documentation	Testing the register functionality. Register Test scenarios with valid and invalid inputs.
+
+Pre Condition	Open Browser
+Post Condition	Close Browser
+Tags	Register
+
+#******************* Common Variables ********************
+
+*** Variables ***
+
+RegisterUrl= https://gitlab.com/users/sign_up
+FirstName= John
+LastName= Smith
+New_UserName= TestingUserName123
+My_UserName= (Username of already existing account)
+Invalid_UserName= Testing User Name123
+New_Mail= mail@mail.com
+My_Mail= (Mail of already existing account)
+Invalid_Mail= testing.gmail.com
+New_Password= 9UhvNkLP9Zy/J4k
+My_Password= (Password of already existing account)
+Invalid_Password= 123456
+Empty=
+
+#******************** Test Cases *************************
+
+*** Test Case ***
+
+# Positive Test
+
+	Register user with valid username and password 
+		Navigate to RegisterUrl
+		Input FirstName, LastName, New_UserName, New_Mail, New_Password
+		Submit
+		Verify Page proceeds to email confirmation code
+
+# Negative Test 
+
+	Register user with empty fields
+		Navigate to RegisterUrl
+		Input Empty instead of FirstName, LastName, UserName, Email or Password
+		Submit Register Form
+		Verify that Error message shows under field with Empty
+	
+	Register user with existing username
+		Navigate to RegisterUrl
+		Input FirstName, LastName, New_Mail, New_Password
+		Input Username My_UserName
+		Submit Register Form
+		Verify that Error message shows about existing username
+	
+	Register user with existing email
+		Navigate to RegisterUrl
+		Input FirstName, LastName, New_UserName, New_Password
+		Input Email My_Mail
+		Submit Register Form
+		Verify that Error message shows about existing email
+
+	Register user with invalid username
+		Navigate to RegisterUrl
+		Input FirstName, LastName, New_Mail, New_Password
+		Input Username Invalid_UserName
+		Submit Register Form
+		Verify that Error message shows about invalid UserName
+
+	Register user with invalid email
+		Navigate to RegisterUrl
+		Input FirstName, LastName, New_UserName, New_Password
+		Input Email Invalid_Mail
+		Submit Register Form
+		Verify that Error message shows about invalid Email
+
+	Register user with invalid password
+		Navigate to RegisterUrl
+		Input FirstName, LastName, New_UserName, New_Mail
+		Input Password Invalid_Password
+		Submit Register Form
+		Verify that Error message shows about invalid Password
+
+# NOTE: Register page had no CAPTCHA
+
+
+

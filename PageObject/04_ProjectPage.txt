@@ -1,0 +1,123 @@
+### **Project creation functionality Testsuite**
+
+
+#******************** Settings ************************
+
+*** Settings ***
+
+Documentation	Testing project create, update and delete functionality. 
+
+Pre Condition	 Open Browser, Login to GitLab
+Post Condition	Close Browser
+Tags Project Manipulation
+
+#******************* Common Variables ********************
+
+*** Variables ***
+
+BlankUrl= https://gitlab.com/projects/new#blank_project
+TemplateUrl = https://gitlab.com/projects/new#create_from_template
+ProjectUrl = https://gitlab.com/dashboard/projects
+ProjectName = My_Project
+Template_ProjectName = My_Template_Project
+Updated_Template_ProjectName = My_Updated_Template_Project
+Reused_ProjectName = (Name of existing project)
+Invalid_ProjectName = .My_Project
+Invalid_ProjectSlug = .My_Project
+Empty= 
+
+#******************** Test Cases *************************
+
+*** Test Case ***
+
+# Positive Test examples are below write test process steps for each below test case
+
+	Create blank project
+		Navigate to BlankUrl
+		Input Project name ProjectName
+		Press Create Project
+		Verify project is created
+		
+	Create template project
+		Navigate to TemplateUrl
+		Choose Template like NodeJS Express
+		Input Project name Template_ProjectName
+		Press Create Project
+		Verify project is created
+
+	Update name of template project
+		Navigate to ProjectUrl
+		Navigate to template project by clicking Template_ProjectName
+		Navigate to Project settings by clicking Three dots icon and Project Settings
+		Replace current project name with Updated_Template_ProjectName
+		Click Save changes
+		Verify project name is updated
+
+	Delete template project
+		Navigate to ProjectUrl
+		Navigate to template project by clicking Template_ProjectName or Updated_Template_ProjectName
+		Navigate to Project settings by clicking Three dots icon and Project Settings
+		Click Advanced
+		Click Delete project
+		Enter requested text string
+		Click Yes, delete project
+		Verify project is deleted
+
+	Valide that message is showing Project 'First project ' was successfully created.
+		Navigate to BlankUrl
+		Input Project name 'First project '
+		Press Create Project
+		Verify message "Project 'First project ' was successfully created." exists.
+
+# Negative Test examples are below write test process steps for each below test case
+
+	Create a blank project with the previous same name
+		Navigate to BlankUrl
+		Input Reused_ProjectName
+		Press Create Project
+		Verify Error message informing about project name taken
+	
+	Create a blank project with no project name
+		Navigate to BlankUrl
+		Input Project name Empty
+		Press Create Project
+		Verify Error message informing about project name missing
+	
+	Create a blank project with invalid project name
+		Navigate to BlankUrl
+		Input Project name Invalid_ProjectName
+		Press Create Project
+		Verify Error message informing about project name being invalid
+
+	Create a blank project with invalid project path/slug
+		Navigate to BlankUrl
+		Input Project name ProjectName
+		Change Project slug to Invalid_ProjectSlug
+		Press Create Project
+		Verify Error message informing about project slug/path being invalid
+
+	Create a template project with the previously used blank project name
+		Navigate to TemplateUrl
+		Choose Template like NodeJS Express
+		Input Project Name ProjectName
+		Press Create Project
+		Verify Error message informing about project name taken
+	
+	Update project name with existing project name
+		Navigate to ProjectUrl
+		Navigate to any project
+		Navigate to Project settings by clicking Three dots icon and Project Settings
+		Replace current project name with ProjectName
+		Click Save changes
+		Verify project name is not updated and error message about name taken
+
+	Delete project without confirmation text string
+		Navigate to ProjectUrl
+		Navigate to project by clicking ProjectName
+		Navigate to Project settings by clicking Three dots icon and Project Settings
+		Click Advanced
+		Click Delete project
+		Enter Empty to input field
+		Verify project cannot be deleted
+
+
